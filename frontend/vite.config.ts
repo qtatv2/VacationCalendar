@@ -5,10 +5,17 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
  plugins: [react()],
   server: {
-    host: true,       // Pozwala na dostęp z zewnątrz kontenera (wymagane w Dockerze)
+    host: true,       
     port: 5173,       
     watch: {
-      usePolling: true, // Wymagane na Windows, żeby odświeżanie strony (HMR) działało
+      usePolling: true, 
+    },
+    proxy: {
+      '/api': {
+        target: 'http://php:80', 
+        changeOrigin: true,
+        secure: false,
+      }
     }
   }
 })
