@@ -13,7 +13,7 @@ class HomeController extends AbstractController
     public function index(VacationRequestRepository $repository): Response
     {
         $requests = $repository->findAll();
-        dd($requests);
+        //dd($requests);
         return $this->json($requests);
     }
 }
