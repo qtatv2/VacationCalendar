@@ -13,7 +13,7 @@ class ApiController extends AbstractController
     {
         return $this->json([
             'message' => 'Pozdrowienia z Symfony! 🐘',
-            'date' => date('Y-m-d H:i:s'),
+            'date' => date('d-m-Y H:i:s'),
             'items' => ['React', 'TypeScript', 'Docker', 'Tailwind']
         ]);
     }
