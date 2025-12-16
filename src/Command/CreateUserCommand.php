@@ -30,6 +30,8 @@ class CreateUserCommand extends Command
         $this
             ->addArgument('email', InputArgument::REQUIRED, 'The email address of the user.')
             ->addArgument('password', InputArgument::REQUIRED, 'The plain password for the user.')
+            ->addArgument('first_name', InputArgument::REQUIRED, 'First name of the user.')
+            ->addArgument('last_name', InputArgument::REQUIRED, 'Last name of the user.')
             ->addArgument('is_admin', InputArgument::OPTIONAL, 'Set to 1 if user should be admin.', 0);
     }
 
@@ -38,11 +40,14 @@ class CreateUserCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $email = $input->getArgument('email');
         $plainPassword = $input->getArgument('password');
+        $firstName = $input->getArgument('first_name');
+        $lastName = $input->getArgument('last_name');
         $isAdmin = (bool) $input->getArgument('is_admin');
 
         $user = new User();
         $user->setEmail($email);
-
+        $user->setFirstName($firstName);
+        $user->setLastName($lastName);
         $roles = $isAdmin ? ['ROLE_ADMIN', 'ROLE_USER'] : ['ROLE_USER'];
         $user->setRoles($roles);
 
