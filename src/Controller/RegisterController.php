@@ -27,7 +27,9 @@ final class RegisterController extends AbstractController
         $user->setEmail($data['email']);
         $hashedPassword = $hasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
-        $user->setRoles($data['roles']);
+        $user->setFirstName($data['firstName']);
+        $user->setLastName($data['lastName']);
+        $user->setRoles([$data['role']]);
         $em->persist($user);
         $em->flush();
 
