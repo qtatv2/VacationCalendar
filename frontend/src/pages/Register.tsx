@@ -87,27 +87,27 @@ export default function Register()
             
             <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">Email</label>
-                <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
+                <input required type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
             </div>
 
             <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">Password</label>
-                <input type="password" name="password" value={formData.password} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
+                <input required type="password" name="password" value={formData.password} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
             </div>
 
             <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">First name</label>
-                <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
+                <input required type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
             </div>
 
             <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">Last name</label>
-                <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
+                <input required type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
             </div>
 
             <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">Roles</label>
-                <select name="role" value={formData.role} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                <select required name="role" value={formData.role} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
                     <option value="ROLE_USER">Employee</option>
                     <option value="ROLE_MANAGER">Manager</option>
                     <option value="ROLE_ADMIN">Admin</option>
