@@ -1,13 +1,5 @@
 import { useState, type ChangeEvent, type EventHandler, type FormEvent } from "react";
 
-interface User{
-    id: number,
-    email: string,
-    firstName: string,
-    lastName: string,
-    role: string
-}
-
 interface RegisterPayload{
     email: string,
     password: string,
@@ -26,7 +18,7 @@ export default function Register()
     lastName: "",
     role: "ROLE_USER"
 });
-    const [message, setMessage] = useState<string>("");
+    const [message, setMessage] = useState<Array<string>>([]);
 
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>{
@@ -48,7 +40,7 @@ export default function Register()
       const data = await response.json();
 
       if (response.ok) {
-        setMessage('Sukces: ' + data.message);
+        setMessage(['Sukces: ' + data.message]);
 
         setFormData({
             email: "",
@@ -59,11 +51,11 @@ export default function Register()
         });
 
       } else {
-        setMessage('Błąd: ' + (data.error || 'Coś poszło nie tak'));
+        setMessage((data.error || 'Coś poszło nie tak'));
       }
 
     } catch (error) {
-      setMessage('Błąd połączenia z serwerem');
+      setMessage(['Błąd połączenia z serwerem']);
     }
   };
 
@@ -73,13 +65,17 @@ export default function Register()
     
             <h2 className="text-3xl font-bold text-white mb-6 text-center">Register new user</h2>
 
-            {message && (
+            {message.length > 0 && (
                 <div className={`mb-6 p-4 rounded-md text-center font-bold ${
-                    message.includes('Sukces') 
+                    message.some(msg => msg.includes('Sukces'))
                     ? 'bg-green-600 text-white border border-green-500' 
                     : 'bg-red-600 text-white border border-red-500'
                 }`}>
-                    {message}
+                    {message.map((m, index)=>(
+                        <div key={index}>
+                        {m}
+                        </div>
+                    ))}
                 </div>
 )}
 
@@ -121,5 +117,4 @@ export default function Register()
         </div>
     </div>
     </>
-
 }
