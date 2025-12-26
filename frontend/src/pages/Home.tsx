@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 
 interface User {
-    id: number;
-    email: string;
-    roles: Array<string>;
+    id: number,
+    email: string,
+    firstName: string,
+    lastName: string,
+    roles: Array<string>
 }
 
 export default function Home() {
