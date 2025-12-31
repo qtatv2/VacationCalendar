@@ -5,11 +5,11 @@ interface User {
     email: string,
     firstName: string,
     lastName: string,
-    roles: Array<string>
+    roles: string[]
 }
 
 export default function Home() {
-    const [user, setUser] = useState<Array<User>>([]);
+    const [user, setUser] = useState<User[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {

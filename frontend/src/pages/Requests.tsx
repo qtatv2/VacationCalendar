@@ -12,7 +12,7 @@ interface VacationRequest{
 }
 export default function Requests()
 {
-    const [data,setData] = useState<Array<VacationRequest>>([]);
+    const [data,setData] = useState<VacationRequest[]>([]);
     const [error, setError] = useState<string | null>(null);
     
   useEffect(() => {
