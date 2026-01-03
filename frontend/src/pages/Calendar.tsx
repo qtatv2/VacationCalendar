@@ -18,12 +18,24 @@ export default function Calendar() {
   const days: number[] = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
   return <>
-    <div className="p-10">
-      <h1 className="text-3xl font-bold text-green-500">Kalendarz</h1>
+    <div className="p-5">
+      <div className="flex flex-col">
+        <h1 className="text-6xl font-bold text-green-500 mb-8">{currentYear}</h1>
+        <div className="flex justify-between">
+          <h1 className="text-4xl font-bold text-red-400 mb-8">{monthsOfYear[currentMonth]}</h1>
+          <div className="flex gap-2">
+            <div className="bg-gray-500 rounded w-12 h-12"><button className="w-full h-full">◀️</button></div>
+            <div className="bg-gray-500 rounded w-12 h-12"><button className="w-full h-full">▶️</button></div>
+          </div>
+      </div>
+      </div>
       <div>
         <div className="grid grid-cols-7 gap-4">
+          {dayOfWeek.map((day, index)=>(
+            <div key={index} className="text-2xl font-bold text-yellow-200">{day}</div>
+            ))}
           {days.map((day, index)=>(
-          <Day dayNumber={index+1}></Day>
+          <Day key={index} dayNumber={index+1}></Day>
           ))}
         </div>
       </div>
