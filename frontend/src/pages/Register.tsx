@@ -18,7 +18,7 @@ export default function Register()
     lastName: "",
     role: "ROLE_USER"
 });
-    const [message, setMessage] = useState<Array<string>>([]);
+    const [message, setMessage] = useState<string[]>([]);
 
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>{
