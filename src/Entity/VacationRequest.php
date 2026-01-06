@@ -14,9 +14,6 @@ class VacationRequest
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $employee = null;
-
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $startDate = null;
 
@@ -35,21 +32,13 @@ class VacationRequest
     #[ORM\Column]
     private ?\DateTime $createdAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'vacationRequests')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $employee = null;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEmployee(): ?string
-    {
-        return $this->employee;
-    }
-
-    public function setEmployee(string $employee): static
-    {
-        $this->employee = $employee;
-
-        return $this;
     }
 
     public function getStartDate(): ?\DateTime
@@ -120,6 +109,18 @@ class VacationRequest
     public function setCreatedAt(\DateTime $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getEmployee(): ?User
+    {
+        return $this->employee;
+    }
+
+    public function setEmployee(?User $employee): static
+    {
+        $this->employee = $employee;
 
         return $this;
     }

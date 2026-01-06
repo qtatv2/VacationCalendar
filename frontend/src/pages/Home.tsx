@@ -31,9 +31,10 @@ export default function Home() {
             {user.map((element) => (
                 <div key={element.id}>
                     <div>
-                        <p>Id {element.id}</p>
-                        <p>Email {element.email}</p>
-                        <p>Roles {element.roles}</p>
+                        <p>Id: {element.id}</p>
+                        <p>Email: {element.email}</p>
+                        <p>Roles: {element.roles}</p>
+                        <p>Name: {element.firstName} {element.lastName}</p>
                     </div>
                     <br></br>
                 </div>
