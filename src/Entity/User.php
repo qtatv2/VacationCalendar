@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -48,6 +50,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Nazwisko jest wymagane")]
     private ?string $lastName = null;
+
+    /**
+     * @var Collection<int, VacationRequest>
+     */
+    #[ORM\OneToMany(targetEntity: VacationRequest::class, mappedBy: 'employee', orphanRemoval: true)]
+    private Collection $vacationRequests;
+
+    public function __construct()
+    {
+        $this->vacationRequests = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,6 +163,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName(string $lastName): static
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VacationRequest>
+     */
+    public function getVacationRequests(): Collection
+    {
+        return $this->vacationRequests;
+    }
+
+    public function addVacationRequest(VacationRequest $vacationRequest): static
+    {
+        if (!$this->vacationRequests->contains($vacationRequest)) {
+            $this->vacationRequests->add($vacationRequest);
+            $vacationRequest->setEmployee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVacationRequest(VacationRequest $vacationRequest): static
+    {
+        if ($this->vacationRequests->removeElement($vacationRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($vacationRequest->getEmployee() === $this) {
+                $vacationRequest->setEmployee(null);
+            }
+        }
 
         return $this;
     }
