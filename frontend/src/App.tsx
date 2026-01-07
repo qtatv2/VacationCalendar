@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import Calendar from './pages/Calendar' 
 import Requests from './pages/Requests'
 import Register from './pages/Register'
+import Login from './pages/Login'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Link to="/calendar" className="text-blue-400 font-bold hover:underline">Kalendarz</Link>
         <Link to="/requests" className="text-blue-400 font-bold hover:underline">Urlopy</Link>
         <Link to="/register" className="text-blue-400 font-bold hover:underline ml-auto">Register</Link>
+        <Link to="/login" className="text-blue-400 font-bold hover:underline ml-auto">Login</Link>
       </nav>
 
       <Routes>
@@ -20,6 +22,7 @@ function App() {
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/requests" element={<Requests />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
 
     </div>
