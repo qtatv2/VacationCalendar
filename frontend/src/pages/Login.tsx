@@ -1,26 +1,32 @@
 import { useState, type ChangeEvent, type EventHandler, type FormEvent } from "react";
 
+interface LoginPayload{
+    email: string,
+    password: string
+}
+
 export default function Login()
 {
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+    const [loginData, setLoginData] = useState<LoginPayload>({
+        email: "",
+        password: ""
+        });
     const [error, setError] = useState<string>("");
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>{
+        setLoginData({...loginData, [e.target.name]: e.target.value})
+    }
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError("");
-
         try {
-            // 1. Strzelamy do Symfony
             const response = await fetch('/api/login_check', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    email: email,       
-                    password: password
-                })
+                body: JSON.stringify(loginData)
             });
 
             const data = await response.json();
@@ -29,8 +35,10 @@ export default function Login()
                 localStorage.setItem('token', data.token);
                 console.log("Zalogowano! Twój token:", data.token);
                 
-                setEmail("");
-                setPassword("");
+                setLoginData({
+                    email: "",
+                    password: ""
+                })
             } else {
                 setError("Błędny email lub hasło");
             }
@@ -52,12 +60,12 @@ export default function Login()
 
             <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">Email</label>
-                <input required type="email" name="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
+                <input required type="email" name="email" value={loginData.email} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
             </div>
 
             <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">Password</label>
-                <input required type="password" name="password" value={password} onChange={e => setPassword(e.target.value)} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
+                <input required type="password" name="password" value={loginData.password} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
             </div>
 
             <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition duration-300 transform hover:scale-[1.02]">Login</button>
