@@ -1,8 +1,12 @@
 import Navbar from './components/Navbar'
+import { AuthProvider } from './context/AuthContext'
 
 function App() {
   return (
-    <Navbar></Navbar>
+    <AuthProvider>
+        <Navbar></Navbar>
+    </AuthProvider>
+
   )
 }
 

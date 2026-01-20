@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent, type EventHandler, type FormEvent } from "react";
+import { useAuth } from "../context/AuthContext";
 
 interface LoginPayload{
     email: string,
@@ -12,6 +13,8 @@ export default function Login()
         password: ""
         });
     const [error, setError] = useState<string>("");
+
+    const { setUser } = useAuth();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>{
         setLoginData({...loginData, [e.target.name]: e.target.value})
@@ -34,11 +37,14 @@ export default function Login()
             if (response.ok) {
                 localStorage.setItem('token', data.token);
                 console.log("Zalogowano! Twój token:", data.token);
+
+                
                 
                 setLoginData({
                     email: "",
                     password: ""
                 })
+
             } else {
                 setError("Błędny email lub hasło");
             }
