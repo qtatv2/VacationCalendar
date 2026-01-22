@@ -1,5 +1,6 @@
 import { useState, type ChangeEvent, type EventHandler, type FormEvent } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface LoginPayload{
     email: string,
@@ -13,8 +14,9 @@ export default function Login()
         password: ""
         });
     const [error, setError] = useState<string>("");
-
-    const { setUser } = useAuth();
+    
+    const { login } = useAuth(); 
+    const navigate = useNavigate(); 
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>{
         setLoginData({...loginData, [e.target.name]: e.target.value})
@@ -35,11 +37,20 @@ export default function Login()
             const data = await response.json();
 
             if (response.ok) {
-                localStorage.setItem('token', data.token);
+                const token = data.token;
                 console.log("Zalogowano! Twój token:", data.token);
 
+                /* 
+                const userResponse = await fetch('https://localhost/api/me', {
+                headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const userData = await userResponse.json();
+                */
+               const userData = { email: loginData.email, firstName: "User", lastName: "Testowy", role: "ROLE_USER" };
                 
-                
+                login(token, userData);
+                navigate("/calendar");
+
                 setLoginData({
                     email: "",
                     password: ""
