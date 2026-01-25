@@ -49,7 +49,7 @@ export default function Calendar() {
             {Array.from({ length: startDay }, (_, index) =>(
               <div key={index} className="p-6 invisible"></div>
           ))}
-          {days.map((day, index)=>(
+          {days.map((index)=>(
           <Day key={index} dayNumber={index+1}></Day>
           ))}
         </div>

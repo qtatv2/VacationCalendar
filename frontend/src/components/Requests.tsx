@@ -23,7 +23,6 @@ export default function Requests()
     })
     .then(data => {
        setData(data);
-       console.log(data);
     })
     .catch(err => {
        setError(err.message);
