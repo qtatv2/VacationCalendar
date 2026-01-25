@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type EventHandler, type FormEvent } from "react";
-import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth, type User } from "../context/AuthContext";
 
 interface LoginPayload{
     email: string,
@@ -40,13 +40,11 @@ export default function Login()
                 const token = data.token;
                 console.log("Zalogowano! Twój token:", data.token);
 
-                /* 
-                const userResponse = await fetch('https://localhost/api/me', {
+                const userResponse = await fetch('/api/me', {
                 headers: { 'Authorization': `Bearer ${token}` }
                 });
-                const userData = await userResponse.json();
-                */
-               const userData = { email: loginData.email, firstName: "User", lastName: "Testowy", role: "ROLE_USER" };
+                const userData = await userResponse.json() as User;
+                
                 
                 login(token, userData);
                 navigate("/calendar");

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 
-interface User{
+export interface User{
     email: string,
     firstName: string,
     lastName: string,
@@ -20,18 +20,26 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children}: AuthProviderProps) => {
-    const [user, setUser] = useState<User | null>(null);
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+    const [user, setUser] = useState<User | null>(() => {
+        const savedUser = localStorage.getItem('user');
+        return savedUser ? JSON.parse(savedUser) : null;
+    });
+
     const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
 
     const login = (newToken: string, newUserData: User) => {
-        localStorage.setItem('token', newToken); 
-        setToken(newToken);                      
-        setUser(newUserData);                    
+        localStorage.setItem('token', newToken);
+        localStorage.setItem('user', JSON.stringify(newUserData));
+        
+        setToken(newToken);
+        setUser(newUserData);
     };
 
     const logout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
         setToken(null);
         setUser(null);
     };

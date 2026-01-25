@@ -8,10 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-final class LoginController extends AbstractController
+final class MeController extends AbstractController
 {
-    #[Route('/api/login_check', name: 'app_login')]
-    public function login(): JsonResponse
+    #[Route('/api/me', name: 'app_me')]
+    public function me(): JsonResponse
     {
         /** @var User */
         $user = $this->getUser();
@@ -24,7 +24,10 @@ final class LoginController extends AbstractController
         }
 
         return $this->json([
-            'name' => $user->getFirstName() . ' ' . $user->getLastName()
+            'email'     => $user->getEmail(),
+            'firstName' => $user->getFirstName(), 
+            'lastName'  => $user->getLastName(),
+            'roles'     => $user->getRoles(),
         ]);
     }
 }

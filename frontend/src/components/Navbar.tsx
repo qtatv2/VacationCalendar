@@ -4,8 +4,11 @@ import Calendar from './Calendar'
 import Requests from './Requests'
 import Register from './Register'
 import Login from './Login'
+import { AuthProvider, useAuth } from '../context/AuthContext'
 export default function Navbar()
 {
+
+ const {user, logout} = useAuth();
     return (
     <div className="min-h-screen w-full bg-slate-900 text-white">
 
@@ -17,6 +20,7 @@ export default function Navbar()
         <Link to="/login" className="text-blue-400 font-bold hover:underline ml-auto">Login</Link>
       </nav>
 
+      <h1>Welcome {user?.firstName}</h1>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/calendar" element={<Calendar />} />
