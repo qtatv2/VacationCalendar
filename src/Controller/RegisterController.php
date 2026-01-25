@@ -23,14 +23,7 @@ final class RegisterController extends AbstractController
         }catch (\Exception $e) {
             return $this->json(['error' => 'Nieprawidłowy format JSON'], 400);
         }
-
-        // $existingUser = $userRepository->findOneBy(['email' => $data['email']]);
-        //     if ($existingUser) {
-        //         return $this->json([
-        //             'error' => 'Ten adres email jest już zajęty.'
-        //         ], 409);
-        //     }
-
+        
         $user = new User;
         $user->setEmail($data['email']);
         $user->setPassword($data['password']);

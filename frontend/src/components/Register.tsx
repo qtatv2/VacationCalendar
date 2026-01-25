@@ -17,7 +17,7 @@ export default function Register()
     firstName: "",
     lastName: "",
     role: "ROLE_USER"
-});
+    });
     const [message, setMessage] = useState<string[]>([]);
 
 
