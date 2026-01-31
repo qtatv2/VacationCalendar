@@ -36,6 +36,12 @@ class VacationRequest
     #[ORM\JoinColumn(nullable: false)]
     private ?User $employee = null;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime(); 
+        $this->status = 'pending';
+    }
+
     public function getId(): ?int
     {
         return $this->id;
