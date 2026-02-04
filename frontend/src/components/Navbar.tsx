@@ -12,8 +12,8 @@ export default function Navbar() {
     return (
         <nav className="p-4 bg-slate-800 border-b border-slate-700 flex gap-4 shadow-lg mb-4 items-center">
             <Link to="/" className="text-blue-400 font-bold hover:underline">Home</Link>
-            <Link to="/calendar" className="text-blue-400 font-bold hover:underline">Kalendarz</Link>
-            <Link to="/requests" className="text-blue-400 font-bold hover:underline">Urlopy</Link>
+            <Link to="/calendar" className="text-blue-400 font-bold hover:underline">Calendar</Link>
+            <Link to="/requests" className="text-blue-400 font-bold hover:underline">Vacation requests</Link>
 
             {user ? (
                 <div className="ml-auto flex gap-4 items-center">

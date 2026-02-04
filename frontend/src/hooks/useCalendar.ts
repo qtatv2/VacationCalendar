@@ -23,7 +23,7 @@ export const useCalendar = () =>{
     }
 
     return {
-        monthsOfYear, dayOfWeek, currentMonth, currentYear, startDay, days, changeMonth
+        monthsOfYear, dayOfWeek, currentMonth, currentYear, startDay, days, currentDate, changeMonth
     }
     
 }
