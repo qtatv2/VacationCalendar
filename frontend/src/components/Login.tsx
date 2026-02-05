@@ -67,7 +67,7 @@ export default function Login()
     <div className="w-full h-[calc(100vh)] flex items-center justify-center bg-slate-900 p-4">
         <div className="-mt-80 w-full max-w-md bg-slate-800 rounded-lg shadow-xl p-8 border border-slate-700">
     
-            <h2 className="text-3xl font-bold text-white mb-6 text-center">Login</h2>
+            <h2 className="text-3xl font-bold text-white mb-6 text-center">Zaloguj</h2>
 
             <form onSubmit={handleSubmit} className="space-y-6">
             
@@ -79,7 +79,7 @@ export default function Login()
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-slate-400 mb-2">Password</label>
+                <label className="block text-sm font-medium text-slate-400 mb-2">Hasło</label>
                 <input required type="password" name="password" value={loginData.password} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"/>
             </div>
 
