@@ -17,8 +17,12 @@ export const useVacationRequest =() =>{
     });
 
     const [isSelecting, setIsSelecting] = useState<boolean>(false);
+    const [isCardOpen, setIsCardOpen] = useState(false);
+
 
     const handleRequestClick = () =>{
+        if (!isSelecting) 
+            {
         setIsSelecting(true);
         setVacationRequestData(prev => ({
             ...prev,
@@ -26,6 +30,19 @@ export const useVacationRequest =() =>{
             endDate: null,
             daysCount: 0
         }));
+    }else {
+            if (vacationRequestData.startDate !== null) {
+                setVacationRequestData(prev => ({
+                    ...prev,
+                    startDate: null,
+                    endDate: null,
+                    daysCount: 0
+                }));
+            } 
+            else {
+                setIsSelecting(false);
+            }
+        }
     }
 
     const handleDayClick = (clickedDate: Date) =>{
@@ -74,14 +91,34 @@ export const useVacationRequest =() =>{
     }
     
     return count;
-};
+    };
+
+    const handleTypeChange = (newType: string) => {
+            setVacationRequestData(prev => ({ ...prev, type: newType }));
+        };
+
+    const closeCard = () => {
+        setVacationRequestData(prev => ({ ...prev, endDate: null, daysCount: 0 })); 
+    };
 
     useEffect(() => {
-    console.log("Stan zaktualizowany:", vacationRequestData);
-    }, [vacationRequestData]);
+            if (vacationRequestData.startDate && vacationRequestData.endDate) {
+                setIsCardOpen(true);
+            } else {
+                setIsCardOpen(false);
+            }
+        }, [vacationRequestData.startDate, vacationRequestData.endDate]);
 
-    return {
-        handleRequestClick, handleDayClick, vacationRequestData, isSelecting
+   const submitRequest = () => {
+        console.log("WYSYŁAM DO BAZY:", vacationRequestData);
+        alert(`Wniosek złożony! \nOd: ${vacationRequestData.startDate?.toLocaleDateString()} \nDo: ${vacationRequestData.endDate?.toLocaleDateString()} \nTyp: ${vacationRequestData.type}`);
+        
+        setIsSelecting(false);
+        setVacationRequestData({ startDate: null, endDate: null, daysCount: 0, type: "Urlop wypoczynkowy" });
     };
+
+        return {
+            handleRequestClick, handleDayClick, vacationRequestData, isSelecting, isCardOpen, handleTypeChange, submitRequest, closeCard
+        };
 
 }
