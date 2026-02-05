@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
-interface VacationRequestPayload{
+export interface VacationRequestPayload{
     startDate: Date | null,
     endDate: Date | null,
     daysCount: number,
@@ -19,6 +20,10 @@ export const useVacationRequest =() =>{
     const [isSelecting, setIsSelecting] = useState<boolean>(false);
     const [isCardOpen, setIsCardOpen] = useState(false);
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const { token } = useAuth();
 
     const handleRequestClick = () =>{
         if (!isSelecting) 
@@ -104,21 +109,67 @@ export const useVacationRequest =() =>{
     useEffect(() => {
             if (vacationRequestData.startDate && vacationRequestData.endDate) {
                 setIsCardOpen(true);
+                if (vacationRequestData.daysCount > 4 && vacationRequestData.type === "Urlop na żądanie") {
+                setVacationRequestData(prev => ({
+                    ...prev,
+                    type: "Urlop wypoczynkowy"
+                }));
+            }
             } else {
                 setIsCardOpen(false);
             }
         }, [vacationRequestData.startDate, vacationRequestData.endDate]);
 
-   const submitRequest = () => {
-        console.log("WYSYŁAM DO BAZY:", vacationRequestData);
-        alert(`Wniosek złożony! \nOd: ${vacationRequestData.startDate?.toLocaleDateString()} \nDo: ${vacationRequestData.endDate?.toLocaleDateString()} \nTyp: ${vacationRequestData.type}`);
-        
-        setIsSelecting(false);
-        setVacationRequestData({ startDate: null, endDate: null, daysCount: 0, type: "Urlop wypoczynkowy" });
+
+    const formatDateForBackend = (date: Date): string => {
+        const offset = date.getTimezoneOffset();
+        const localDate = new Date(date.getTime() - (offset * 60 * 1000));
+        return localDate.toISOString().split('T')[0];
+    };
+    
+   const submitRequest = async () => {
+        if (!vacationRequestData.startDate || !vacationRequestData.endDate) return;
+
+        setIsLoading(true);
+        setError(null);
+
+        const payloadToSend = {
+            startDate: formatDateForBackend(vacationRequestData.startDate), 
+            endDate: formatDateForBackend(vacationRequestData.endDate),  
+            daysCount: vacationRequestData.daysCount,
+            type: vacationRequestData.type
+        };
+
+        try {
+            const response = await fetch('/api/requests', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(payloadToSend)
+            });
+
+            if (!response.ok) {
+                throw new Error('Wystąpił błąd podczas wysyłania wniosku');
+            }
+
+            const result = await response.json(); 
+            console.log("Sukces:", result);
+
+            setIsSelecting(false);
+            setVacationRequestData({ startDate: null, endDate: null, daysCount: 0, type: "" });
+
+        } catch (err: any) {
+            console.error(err);
+            setError(err.message || "Błąd połączenia");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
         return {
-            handleRequestClick, handleDayClick, vacationRequestData, isSelecting, isCardOpen, handleTypeChange, submitRequest, closeCard
+            handleRequestClick, handleDayClick, vacationRequestData, isSelecting, isCardOpen, handleTypeChange, submitRequest, closeCard, isLoading, error
         };
 
 }

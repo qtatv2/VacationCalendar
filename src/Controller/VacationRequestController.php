@@ -15,14 +15,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class VacationRequestController extends AbstractController
 {
-    #[Route('/api/requests', name: 'app_vacation_request', methods: ['GET'])]
+    #[Route('/api/requests', name: 'app_vacation_request_show', methods: ['GET'])]
     public function showRequests(VacationRequestRepository $repository): JsonResponse
     {
          $requests = $repository->findAll();
-        return $this->json($requests);
+        return $this->json($requests, 200, [], ['groups' => 'vacation:read']);
     }
 
-    #[Route('/api/requests', name: 'app_vacation_request', methods: ['POST'])]
+    #[Route('/api/requests', name: 'app_vacation_request_create', methods: ['POST'])]
     public function createRequests(Request $request, EntityManagerInterface $em): Response
     {
         try{
@@ -32,6 +32,9 @@ final class VacationRequestController extends AbstractController
         }
         /** @var User $user */
         $user = $this->getUser();
+        if (!$user) {
+            return $this->json(['error' => 'Nie jesteś zalogowany.'], 401);
+        }
 
         $vacationRequest = new VacationRequest;
         $vacationRequest->setEmployee($user);

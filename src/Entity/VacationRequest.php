@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\VacationRequestRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: VacationRequestRepository::class)]
 class VacationRequest
@@ -12,21 +13,27 @@ class VacationRequest
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['vacation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['vacation:read'])]
     private ?\DateTime $startDate = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['vacation:read'])]
     private ?\DateTime $endDate = null;
 
     #[ORM\Column]
+    #[Groups(['vacation:read'])]
     private ?int $daysCount = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['vacation:read'])]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['vacation:read'])]
     private ?string $status = null;
 
     #[ORM\Column]
@@ -34,6 +41,7 @@ class VacationRequest
 
     #[ORM\ManyToOne(inversedBy: 'vacationRequests')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['vacation:read'])]
     private ?User $employee = null;
 
     public function __construct()

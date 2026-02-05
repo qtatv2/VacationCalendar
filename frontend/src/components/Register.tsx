@@ -104,9 +104,9 @@ export default function Register()
             <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">Rola</label>
                 <select required name="role" value={formData.role} onChange={handleChange} className="w-full px-4 py-2 bg-slate-900 text-white rounded-md border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
-                    <option value="ROLE_USER">Employee</option>
-                    <option value="ROLE_MANAGER">Manager</option>
-                    <option value="ROLE_ADMIN">Admin</option>
+                    <option value="ROLE_USER">Pracownik</option>
+                    <option value="ROLE_MANAGER">Kierownik</option>
+                    <option value="ROLE_ADMIN">Administrator</option>
                 </select>
             </div>
 

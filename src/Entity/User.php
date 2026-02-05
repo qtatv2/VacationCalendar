@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -45,10 +46,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Imię jest wymagane")]
+    #[Groups(['vacation:read'])]
     private ?string $firstName = null;
-
+    
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Nazwisko jest wymagane")]
+    #[Groups(['vacation:read'])]
     private ?string $lastName = null;
 
     /**

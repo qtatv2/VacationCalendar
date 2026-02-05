@@ -6,11 +6,11 @@ import VacationRequestCard from './VacationRequestCard.tsx';
 export default function Calendar() {
 
   const {monthsOfYear, dayOfWeek, currentMonth, currentYear,  startDay, days, currentDate, changeMonth} = useCalendar();
-  const {handleRequestClick, handleDayClick, vacationRequestData, isSelecting, isCardOpen, handleTypeChange, submitRequest, closeCard} = useVacationRequest();
+  const {handleRequestClick, handleDayClick, vacationRequestData, isSelecting, isCardOpen, handleTypeChange, submitRequest, closeCard, isLoading} = useVacationRequest();
 
   return (
     <>
-    <VacationRequestCard isOpen={isCardOpen} data={vacationRequestData} onClose={closeCard} onSubmit={submitRequest} onTypeChange={handleTypeChange}/>
+    <VacationRequestCard isOpen={isCardOpen} data={vacationRequestData} onClose={closeCard} onSubmit={submitRequest} onTypeChange={handleTypeChange} isLoading={isLoading}/>
 
     <div className="p-5">
       <div className="flex flex-col">

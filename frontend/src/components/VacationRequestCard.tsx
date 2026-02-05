@@ -1,19 +1,16 @@
-interface RequestData {
-    startDate: Date | null,
-    endDate: Date | null,
-    daysCount: number,
-    type: string
-}
+import type { VacationRequestPayload } from "../hooks/useVacationRequest"
 
-interface ModalProps {
+
+interface CardProps {
     isOpen: boolean,
-    data: RequestData,
+    data: VacationRequestPayload,
     onClose: () => void,
     onSubmit: () => void,
-    onTypeChange: (type: string) => void
+    onTypeChange: (type: string) => void,
+    isLoading: boolean
 }
 
-export default function VacationRequestCard({ isOpen, data, onClose, onSubmit, onTypeChange }: ModalProps) {
+export default function VacationRequestCard({ isOpen, data, onClose, onSubmit, onTypeChange, isLoading }: CardProps) {
     if (!isOpen) return null; 
 
     const formatDate = (date: Date | null) => {
@@ -50,13 +47,9 @@ export default function VacationRequestCard({ isOpen, data, onClose, onSubmit, o
 
                     <div>
                         <label className="block text-sm font-medium text-slate-300 mb-2">Typ wniosku</label>
-                        <select 
-                            value={data.type}
-                            onChange={(e) => onTypeChange(e.target.value)}
-                            className="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
-                        >
+                        <select value={data.type} onChange={(e) => onTypeChange(e.target.value)} className="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all">
                             <option value="Urlop wypoczynkowy">Urlop wypoczynkowy</option>
-                            <option value="Urlop na żądanie">Urlop na żądanie</option>
+                            <option value="Urlop na żądanie" disabled={data.daysCount > 4}>Urlop na żądanie</option>
                             <option value="Okolicznościowy">Urlop okolicznościowy</option>
                             <option value="Zwolnienie lekarskie">Zwolnienie lekarskie</option>
                             <option value="Opieka nad dzieckiem">Opieka nad dzieckiem</option>
@@ -65,17 +58,18 @@ export default function VacationRequestCard({ isOpen, data, onClose, onSubmit, o
                 </div>
 
                 <div className="p-6 bg-slate-800/50 border-t border-slate-700 flex gap-3 justify-end">
-                    <button 
-                        onClick={onClose}
-                        className="px-5 py-2.5 rounded-lg text-slate-300 font-medium hover:bg-slate-700 hover:text-white transition-colors"
-                    >
-                        Wróć / Popraw
+                    <button onClick={onClose} disabled={isLoading} className="px-5 py-2.5 rounded-lg text-slate-300 font-medium hover:bg-slate-700 hover:text-white transition-colors">
+                        Wróć
                     </button>
-                    <button 
-                        onClick={onSubmit}
-                        className="px-5 py-2.5 rounded-lg bg-green-600 text-white font-bold hover:bg-green-500 shadow-lg shadow-green-900/20 transition-all transform hover:scale-105"
-                    >
-                        Zatwierdź wniosek
+                    <button onClick={onSubmit} disabled={isLoading} className="px-5 py-2.5 rounded-lg bg-green-600 text-white font-bold hover:bg-green-500 shadow-lg shadow-green-900/20 transition-all transform hover:scale-105">
+                        {isLoading ? (
+                            <>
+                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                Wysyłanie...
+                            </>
+                        ) : (
+                            "Zatwierdź wniosek"
+                        )}
                     </button>
                 </div>
             </div>
