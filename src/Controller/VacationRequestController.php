@@ -18,7 +18,19 @@ final class VacationRequestController extends AbstractController
     #[Route('/api/requests', name: 'app_vacation_request_show', methods: ['GET'])]
     public function showRequests(VacationRequestRepository $repository): JsonResponse
     {
-         $requests = $repository->findAll();
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json(['error' => 'Nie jesteś zalogowany!'], 401);
+        }
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_MANAGER'))
+        {
+            $requests = $repository->findAll();
+        }else
+        {
+            $requests = $repository->findBy(['employee' => $user]);
+        }
+         
         return $this->json($requests, 200, [], ['groups' => 'vacation:read']);
     }
 

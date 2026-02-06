@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type EventHandler, type FormEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth, type User } from "../context/AuthContext";
 
@@ -47,7 +47,7 @@ export default function Login()
                 
                 
                 login(token, userData);
-                navigate("/calendar");
+                navigate("/");
 
                 setLoginData({
                     email: "",

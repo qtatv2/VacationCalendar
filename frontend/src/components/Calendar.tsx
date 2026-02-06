@@ -2,29 +2,42 @@ import Day from './Day.tsx'
 import { useCalendar } from '../hooks/useCalendar.ts';
 import { useVacationRequest } from '../hooks/useVacationRequest.ts';
 import VacationRequestCard from './VacationRequestCard.tsx';
+import { useCalendarData } from '../hooks/useCalendarData.ts';
 
 export default function Calendar() {
 
   const {monthsOfYear, dayOfWeek, currentMonth, currentYear,  startDay, days, currentDate, changeMonth} = useCalendar();
   const {handleRequestClick, handleDayClick, vacationRequestData, isSelecting, isCardOpen, handleTypeChange, submitRequest, closeCard, isLoading} = useVacationRequest();
+  const { getUserRequestForDay, getStatusColor, refreshRequests } = useCalendarData();
+
+  const handleSafeSubmit = async () => {
+      await submitRequest();
+      await refreshRequests();
+      closeCard();
+  };
 
   return (
     <>
-    <VacationRequestCard isOpen={isCardOpen} data={vacationRequestData} onClose={closeCard} onSubmit={submitRequest} onTypeChange={handleTypeChange} isLoading={isLoading}/>
+    <VacationRequestCard isOpen={isCardOpen} data={vacationRequestData} onClose={closeCard} onSubmit={handleSafeSubmit} onTypeChange={handleTypeChange} isLoading={isLoading}/>
 
     <div className="p-5">
-      <div className="flex flex-col">
-        <h1 className="text-6xl font-bold text-green-500 mb-8">{currentYear}</h1>
-        
-        <div className="flex items-center gap-4 mb-4">
+      <div className="flex flex-col items-center mb-6 gap-4">
+        <div className="flex items-center gap-6">
+          <button onClick={() => changeMonth(-1)} className="w-12 h-12 flex items-center justify-center bg-slate-800 rounded-lg hover:bg-slate-700 text-white font-bold transition-colors shadow-md border border-slate-700">&lsaquo;</button>
+
+          <h1 className="text-4xl font-bold text-white text-center min-w-[250px]">
+              {monthsOfYear[currentMonth]} <span className="text-blue-400">{currentYear}</span>
+          </h1>
+
+          <button onClick={() => changeMonth(1)} className="w-12 h-12 flex items-center justify-center bg-slate-800 rounded-lg hover:bg-slate-700 text-white font-bold transition-colors shadow-md border border-slate-700">&rsaquo;</button>
+        </div>
+        <div className="flex items-center justify-center gap-4 mb-4">
             <button onClick={handleRequestClick} className={` rounded px-4 py-2 text-white font-bold transition-all duration-300 shadow-lg ${isSelecting 
                         ? 'bg-green-600 ring-2 ring-offset-2 ring-offset-slate-900 ring-green-500 scale-105' 
-                        : 'bg-blue-600 hover:bg-blue-500' 
-                    }`}>
-                {!isSelecting 
-        ? "Nowy wniosek" 
-        : (vacationRequestData.startDate ? "Reset" : "Anuluj")
-    }
+                        : 'bg-blue-600 hover:bg-blue-500' }`}>
+                {
+                !isSelecting ? "Nowy wniosek" : (vacationRequestData.startDate ? "Reset" : "Anuluj")
+                }
             </button>
 
             {isSelecting && (
@@ -36,17 +49,7 @@ export default function Calendar() {
             )}
         </div>
 
-        <div className="flex justify-between">
-          <h1 className="text-4xl font-bold text-red-400 mb-8">{monthsOfYear[currentMonth]}</h1>
-          <div className="flex gap-2">
-            <div className="bg-gray-500 rounded w-12 h-12">
-              <button className="w-full h-full" onClick={()=>changeMonth(-1)}>◀️</button>
-              </div>
-            <div className="bg-gray-500 rounded w-12 h-12">
-              <button className="w-full h-full" onClick={()=>changeMonth(1)}>▶️</button>
-            </div>
-          </div>
-      </div>
+        
       </div>
       
       <div>
@@ -63,14 +66,19 @@ export default function Calendar() {
             ))}
             {days.map((day, index)=>{
 
-                const dateForTile = new Date(currentYear, currentMonth, day);
-                dateForTile.setHours(0, 0, 0, 0);
+              const dateForTile = new Date(currentYear, currentMonth, day);
+              dateForTile.setHours(0, 0, 0, 0);
 
-                const isActive: boolean = dateForTile.getDay() !== 0 && dateForTile.getDay() !== 6;
-                const isStart: boolean = vacationRequestData.startDate?.getTime() === dateForTile.getTime();
-                const isEnd: boolean = vacationRequestData.endDate?.getTime() === dateForTile.getTime();
-                const inRange: boolean = vacationRequestData.startDate !== null && vacationRequestData.endDate !== null && dateForTile.getTime() > vacationRequestData.startDate.getTime() && dateForTile.getTime() < vacationRequestData.endDate.getTime();
+              const isToday = day === currentDate.getDate() && currentMonth === currentDate.getMonth() && currentYear === currentDate.getFullYear();
+              const isActive: boolean = dateForTile.getDay() !== 0 && dateForTile.getDay() !== 6;
+              const isStart: boolean = vacationRequestData.startDate?.getTime() === dateForTile.getTime();
+              const isEnd: boolean = vacationRequestData.endDate?.getTime() === dateForTile.getTime();
+              const inRange: boolean = vacationRequestData.startDate !== null && vacationRequestData.endDate !== null && dateForTile.getTime() > vacationRequestData.startDate.getTime() && dateForTile.getTime() < vacationRequestData.endDate.getTime();
 
+              const existingRequest = getUserRequestForDay(day, currentMonth, currentYear);
+                    
+              const statusClass = existingRequest ? getStatusColor(existingRequest.status) : '';
+                
                 return (
                 <Day 
                     key={index} 
@@ -81,6 +89,8 @@ export default function Calendar() {
                     isSelectedStart={isStart} 
                     isSelectedEnd={isEnd} 
                     isInRange={inRange}
+                    isToday={isToday}
+                    statusClass={statusClass}
                 />
                 )
             })}

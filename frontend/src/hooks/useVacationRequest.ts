@@ -155,7 +155,6 @@ export const useVacationRequest =() =>{
             }
 
             const result = await response.json(); 
-            console.log("Sukces:", result);
 
             setIsSelecting(false);
             setVacationRequestData({ startDate: null, endDate: null, daysCount: 0, type: "" });
