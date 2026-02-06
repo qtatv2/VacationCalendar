@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type EventHandler, type FormEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 
 interface RegisterPayload{
     email: string,
